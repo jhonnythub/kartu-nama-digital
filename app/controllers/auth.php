@@ -13,7 +13,7 @@ class auth extends controller{
 
     public function register()
     {
-        $data["title"] = "Halaman Verifikasi";
+        $data["title"] = "Halaman Daftar";
 
         $this->view('templates/header', $data);
         $this->view('auth/register', $data);
@@ -46,8 +46,12 @@ class auth extends controller{
             $_POST["pass"] = password_hash($pass, PASSWORD_DEFAULT);
             $_POST["id_user"] = $id_user;
             if( $this->model('auth_model')->getEmail($_POST) > 0 ){
-                echo "<script>alert('email sudah terdaftar');</script>"; exit;
+                echo "<script>alert('email sudah terdaftar'); window.location.href = '".base_url."./auth/register';</script>"; exit;
             }
+            $text = "Nama : ".$_POST["name"]."\nPekerjaan : ".$_POST["pekerjaan"]."\nTelepon : ".$_POST["telepon"]."\nAlamat : ".$_POST["lokasi"]."\nEmail : ".$_POST["email"];
+            $temp = "dist/qr_code-img/"; $name = uniqid().".png"; $quality = "H"; $ukuran = 5; $padding = 1; $_POST["all"] = $name;
+            if( !file_exists($temp) ){ mkdir($temp); }
+            QRcode::png($text,$temp.$name,$quality,$ukuran,$padding);
             if( $this->model('auth_model')->insertNewUserIdentify($_POST) > 0 ){
                 date_default_timezone_set('Asia/Jakarta'); $_POST["date"] = date("Y-m-d H:i:s");
                 $_POST["username"] = str_replace(" ", ".", $_POST["name"]);
@@ -82,7 +86,7 @@ class auth extends controller{
                     if($tanggal > 60){
                         if( password_verify($pass, $hash) ){
                             $this->model('auth_model')->updateFiled($_POST);
-                            if( $row["verified"] === false ){
+                            if( $row["verified"] == 0 ){
                                 echo "Akun belum terverifikasi"; exit;
                             }else{
                                 $_SESSION["login"] = true; $_SESSION["email "] = $_POST["username"];
@@ -99,7 +103,7 @@ class auth extends controller{
                 }
                 if( password_verify($pass, $hash) ){
                     $this->model('auth_model')->updateFiled($_POST);
-                    if( $row["verified"] === false ){
+                    if( $row["verified"] == 0 ){
                         echo "Akun belum terverifikasi"; exit;
                     }else{
                         $_SESSION["login"] = true; $_SESSION["email"] = $_POST["username"];

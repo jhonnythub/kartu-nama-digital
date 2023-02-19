@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 05:27 AM
+-- Generation Time: Feb 19, 2023 at 03:33 PM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,18 +34,6 @@ CREATE TABLE `notifikasi` (
   `type` varchar(100) NOT NULL,
   `value` text NOT NULL,
   `send_bydate` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `qr_code`
---
-
-CREATE TABLE `qr_code` (
-  `id` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `name_file` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -81,7 +69,8 @@ CREATE TABLE `user_identify` (
   `pekerjaan` varchar(200) NOT NULL,
   `email` varchar(200) NOT NULL,
   `fp` varchar(200) NOT NULL,
-  `expired` date DEFAULT NULL
+  `expired` date DEFAULT NULL,
+  `qr_code` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -106,12 +95,6 @@ CREATE TABLE `visits` (
 -- Indexes for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `qr_code`
---
-ALTER TABLE `qr_code`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -143,12 +126,6 @@ ALTER TABLE `notifikasi`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `qr_code`
---
-ALTER TABLE `qr_code`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -164,7 +141,7 @@ ALTER TABLE `user_identify`
 -- AUTO_INCREMENT for table `visits`
 --
 ALTER TABLE `visits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

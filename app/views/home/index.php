@@ -31,11 +31,12 @@
                     <ul class="list-group list-group-flush text-wrap">
                         <li class="list-group-item d-flex justify-content-between">Nama <i class="ms-2 me-auto">: <?= $data["nama_lengkap"]; ?></i></li>
                         <li class="list-group-item">Pekerjaan <i class="ms-2 me-auto">: <?= $data["pekerjaan"]; ?></i></li>
+                        <li class="list-group-item">Telepon <i class="ms-2 me-auto">: <?= $data["telepon"]; ?></i></li>
                         <li class="list-group-item">Alamat <i class="ms-2 me-auto">: <?= $data["alamat"]; ?></i></li>
-                        <li class="list-group-item">TTL</li>
-                        <li class="list-group-item">Masa Berlaku</li>
+                        <li class="list-group-item">Email <i class="ms-2 me-auto">: <?= $data["email"]; ?></i></li>
+                        <li class="list-group-item">Masa Berlaku <i class="ms-2 me-auto">: <?= $data["expired"]; ?></i></li>
                         <p class="text-end mt-3">
-                            <img src="<?= base_url; ?>/dist/image/frame.png" width="50" height="50" class="img-thumbnail">
+                            <img src="<?= base_url; ?>/dist/qr_code-img/<?= $data["qr_code"]; ?>" width="50" height="50" class="img-thumbnail">
                         </p>
                     </ul>
                 </div>

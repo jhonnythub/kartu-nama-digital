@@ -11,6 +11,11 @@ class lokasi extends controller{
             $_POST["browser"] = $this->get_client_browser();
             $_POST["os"] = $_SERVER["HTTP_USER_AGENT"];
 
+            $ip = $this->get_client_ip();
+            $checkip = @json_decode(file_get_contents("https://www.geoplugin.net/json.gp?ip=". $ip));
+            $lokasi = $checkip->geoplugin_countryName." - ".$checkip->geoplugin_city;
+            $_SESSION["ip"] = $lokasi;
+
             if( $this->model('visit_model')->insertVisit($_POST) > 0 ){
                 $_SESSION["lokasi"] = true;
                 echo "<script>alert('berhasil');</script>"; exit;

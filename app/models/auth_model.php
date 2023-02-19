@@ -12,15 +12,19 @@ class auth_model{
     }
 
     public function insertNewUserIdentify($data){
-        $query = "INSERT INTO user_identify VALUES(:id,:id_user,:nama_lengkap,:lokasi,:pekerjaan,:email,:fp)";
+        date_default_timezone_set('Asia/Jakarta'); $expired = date('Y-m-d', strtotime('+7 month', strtotime( date("Y-m-d H:i:s") )));
+        $query = "INSERT INTO user_identify VALUES(:id,:id_user,:nama_lengkap,:telepon,:lokasi,:pekerjaan,:email,:fp,:expired,:qr_code)";
         $this->db->query($query);
-        $this->db->bind('id', "");
-        $this->db->bind('id_user', $data["id_user"]);
-        $this->db->bind('nama_lengkap', $data["name"]);
-        $this->db->bind('lokasi', $data["lokasi"]);
-        $this->db->bind('pekerjaan', $data["pekerjaan"]);
-        $this->db->bind('email', $data["email"]);
-        $this->db->bind('fp', "-");
+        $this->db->bind('id', htmlspecialchars(""));
+        $this->db->bind('id_user', htmlspecialchars($data["id_user"]));
+        $this->db->bind('nama_lengkap', htmlspecialchars($data["name"]));
+        $this->db->bind('telepon', htmlspecialchars($data["telepon"]));
+        $this->db->bind('lokasi', htmlspecialchars($data["lokasi"]));
+        $this->db->bind('pekerjaan', htmlspecialchars($data["pekerjaan"]));
+        $this->db->bind('email', htmlspecialchars($data["email"]));
+        $this->db->bind('fp', htmlspecialchars("-"));
+        $this->db->bind('expired', htmlspecialchars($expired));
+        $this->db->bind('qr_code', $data["all"]);
         $this->db->execute();
 
         return $this->db->rowCount();
@@ -29,14 +33,14 @@ class auth_model{
     public function insertNewUser($data){
         $query = "INSERT INTO users VALUES(:id,:id_user,:username,:email,:password,:login_filed,:last_login,:otp,:verified)";
         $this->db->query($query);
-        $this->db->bind('id', "");
-        $this->db->bind('id_user', $data["id_user"]);
-        $this->db->bind('username', $data["username"]);
-        $this->db->bind('email', $data["email"]);
-        $this->db->bind('password', $data["pass"]);
-        $this->db->bind('login_filed', "");
-        $this->db->bind('last_login', $data["date"]);
-        $this->db->bind('otp', $data["id_user"]);
+        $this->db->bind('id', htmlspecialchars(""));
+        $this->db->bind('id_user', htmlspecialchars($data["id_user"]));
+        $this->db->bind('username', htmlspecialchars($data["username"]));
+        $this->db->bind('email', htmlspecialchars($data["email"]));
+        $this->db->bind('password', htmlspecialchars($data["pass"]));
+        $this->db->bind('login_filed', htmlspecialchars(0));
+        $this->db->bind('last_login', htmlspecialchars($data["date"]));
+        $this->db->bind('otp', htmlspecialchars($data["id_user"]));
         $this->db->bind('verified', false);
         $this->db->execute();
 
