@@ -2,6 +2,13 @@
 
 class auth extends controller{
 
+    public function __construct()
+    {
+        if( isset($_SESSION["login"]) ){
+            header("Location: ".base_url); exit;
+        }
+    }
+
     public function index(){
         $data["title"] = "Halaman Login";
         var_dump($_SESSION);
@@ -35,6 +42,15 @@ class auth extends controller{
 
         $this->view('templates/header', $data);
         $this->view('auth/reset', $data);
+        $this->view('templates/footer', $data);
+    }
+
+    public function profile()
+    {
+        $data['title'] = "Halaman Foto Profile";
+
+        $this->view('templates/header', $data);
+        $this->view('home/fp', $data);
         $this->view('templates/footer', $data);
     }
 
@@ -89,7 +105,7 @@ class auth extends controller{
                             if( $row["verified"] == 0 ){
                                 echo "Akun belum terverifikasi"; exit;
                             }else{
-                                $_SESSION["login"] = true; $_SESSION["email "] = $_POST["username"];
+                                $_SESSION["login"] = true; $_SESSION["email"] = $_POST["username"];
                                 header("Location: ".base_url); exit;
                             }
                         }else{
@@ -104,7 +120,13 @@ class auth extends controller{
                 if( password_verify($pass, $hash) ){
                     $this->model('auth_model')->updateFiled($_POST);
                     if( $row["verified"] == 0 ){
-                        echo "Akun belum terverifikasi"; exit;
+                        $_SESSION["email"] = $_POST["username"]; $_SESSION["verifikasi"] = true;
+                        $data["title"] = "Halaman Verfikasi";
+
+                        $this->view('templates/header', $data);
+                        $this->view('auth/verifikasi', $data);
+                        $this->view('templates/header', $data);
+                        exit;
                     }else{
                         $_SESSION["login"] = true; $_SESSION["email"] = $_POST["username"];
                         header("Location: ".base_url); exit;
@@ -116,7 +138,34 @@ class auth extends controller{
             }else{
                 echo "Username tidak dikenali";
             }
+        }else{
+            header("Location: ".base_url."/auth");
         }
+    }
+
+    public function postProfile()
+    {
+        $email = 'dominictorretto501@gmail.com';
+        $namaFile = $_FILES["fp"]["name"];
+        $ukuran = $_FILES["fp"]["size"];
+        $tmp = $_FILES["fp"]["tmp_name"];
+        $error = $_FILES["fp"]["error"];
+        if( $error === 4 ){
+            echo "<script>alert(); window.location.href = '".base_url."/auth/profile'</script>"; return false;
+        }
+        $ekstensiValid  = ["jpg","png","jpeg"];
+        $extensi = explode(".",$namaFile);
+        $extensi = strtolower(end($extensi));
+        if( !in_array($extensi, $ekstensiValid) ){
+            echo "<script>alert('yang diupload bukanlah Gambar'); window.location.href = '".base_url."/auth/profile';</script>"; return false;
+        }
+        if( $ukuran > 1000000 ){
+            echo "<script>alert('Ukuran terlalu besar'); window.location.href = '".base_url."/auth/profile';</script>"; return false;
+        }
+        $tmp_server = "dist/profile-img/"; if( !file_exists($tmp_server) ){ mkdir($tmp_server); }
+        $name = uniqid(); $name .= '.'; $name .= $extensi;
+        move_uploaded_file($tmp, $tmp_server.$name);
+        $this->model('users_model')->updateProfile($name, $email);
     }
 
     public function recovery(){

@@ -12,7 +12,7 @@ class auth_model{
     }
 
     public function insertNewUserIdentify($data){
-        date_default_timezone_set('Asia/Jakarta'); $expired = date('Y-m-d', strtotime('+7 month', strtotime( date("Y-m-d H:i:s") )));
+        date_default_timezone_set('Asia/Jakarta'); $expired = date('Y-m-d', strtotime('+3 month', strtotime( date("Y-m-d H:i:s") )));
         $query = "INSERT INTO user_identify VALUES(:id,:id_user,:nama_lengkap,:telepon,:lokasi,:pekerjaan,:email,:fp,:expired,:qr_code)";
         $this->db->query($query);
         $this->db->bind('id', htmlspecialchars(""));

@@ -12,6 +12,7 @@ class notifikasi extends controller{
 
     public function index()
     {
+        $data["notifikasi"] = $this->model('users_model')->getNotifikasi($_SESSION["email"]);
         $data["title"] = "Halaman Notifikasi";
 
         $this->view('templates/header', $data);

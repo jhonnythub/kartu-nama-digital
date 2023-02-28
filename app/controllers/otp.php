@@ -4,7 +4,7 @@ class otp extends controller{
 
     public function __construct()
     {
-        if( !isset($_SESSION["register"]) && !isset($_SESSION["recover"]) ){
+        if( !isset($_SESSION["register"]) && !isset($_SESSION["recover"]) && !isset($_SESSION["verifikasi"])){
             echo "<script>alert('tidak diizinkan!'); window.location.href = '".base_url."/auth';</script>"; exit;
         }
     }
@@ -23,7 +23,7 @@ class otp extends controller{
         if( $_SERVER["REQUEST_METHOD"] == "POST" ){
             $email = $_SESSION["email"];
             if( $this->model('auth_model')->otp($_POST,$email) > 0 ){
-                if( $_SESSION["register"] ){
+                if( $_SESSION["register"] || $_SESSION["verifikasi"] ){
                     $this->model('auth_model')->otpVerified($email);
                     $_SESSION["login"] = true;
                     unset($_SESSION["register"]);

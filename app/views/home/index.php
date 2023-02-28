@@ -36,7 +36,9 @@
                         <li class="list-group-item">Email <i class="ms-2 me-auto">: <?= $data["email"]; ?></i></li>
                         <li class="list-group-item">Masa Berlaku <i class="ms-2 me-auto">: <?= $data["expired"]; ?></i></li>
                         <p class="text-end mt-3">
-                            <img src="<?= base_url; ?>/dist/qr_code-img/<?= $data["qr_code"]; ?>" width="50" height="50" class="img-thumbnail">
+                            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#qrCodeid<?= $data["id"]; ?>">
+                                <img src="<?= base_url; ?>/dist/qr_code-img/<?= $data["qr_code"]; ?>" width="50" height="50" class="img-thumbnail">
+                            </a>
                         </p>
                     </ul>
                 </div>
@@ -45,7 +47,7 @@
     </div>
     <ul class="nav nav-pills nav-fill">
         <li class="nav-item">
-            <a class="nav-link" href="#"><h1><i class="bi bi-star-fill"></i></h1></a>
+            <a class="nav-link" href="<?= base_url; ?>/home/start/<?= $data["email"]; ?>"><h1><i class="bi bi-star<?php if( $this->model('users_model')->getStartUser($_SESSION["email"], $data["email"]) > 0){ echo "-fill"; } ?>"></i></h1></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#" data-bs-target="#message" data-bs-toggle="offcanvas"><h1><i class="bi bi-envelope-paper"></i><h1></a>
@@ -54,6 +56,21 @@
             <a class="nav-link" href="#" data-bs-target="#share" data-bs-toggle="modal"><h1><i class="bi bi-share-fill"></i></h1></a>
         </li>
     </ul>
+
+<div class="modal fade" id="qrCodeid<?= $data["id"]; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="<?= base_url; ?>/dist/qr_code-img/<?= $data["qr_code"]; ?>" class="img-thumbnail rounded mx-auto d-block" width="250" alt="qrCode"/>
+            <h1 class="modal-title fs-5 text-center" id="exampleModalLabel"><?= $data["nama_lengkap"]; ?></h1>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="message" aria-labelledby="offcanvasBottomLabel">
   <div class="offcanvas-header bg-primary bg-opacity-50">
     <h5 class="offcanvas-title" id="offcanvasBottomLabel"><?= $data["nama_lengkap"]; ?></h5>

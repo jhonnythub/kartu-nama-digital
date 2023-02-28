@@ -20,10 +20,8 @@
 
 <main>
 <ul class="list-group">
-  <li class="list-group-item">Notifikasi 1</li>
-  <li class="list-group-item">Notifikasi 2</li>
-  <li class="list-group-item">Notifikasi 3</li>
-  <li class="list-group-item">Notifikasi 4</li>
-  <li class="list-group-item">Notifikasi 5</li>
+  <?php foreach( $data["notifikasi"] as $notif ) : ?>
+  <li class="list-group-item"><?= $notif["from_user"]; ?> give your <?= $notif["type"]; ?></li>
+  <?php endforeach; ?>
 </ul>
 </main>
